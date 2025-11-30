@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/jobs"
   get "player/create"
-  resources :games
-  resources :players, only: :create
+  resources :games do
+    resources :players, only: [:index, :create] do
+      resources :rounds
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
