@@ -1,0 +1,14 @@
+ul class="my-6 flex flex-col gap-2 text-xs"
+  - if game.players.none?
+    li
+      svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        circle cx="12" cy="12" r="9"
+        path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v5l3 3"
+      span
+        = "Waiting for players"
+  - else
+    - game.players.each do |player|
+      li
+        svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"
+        span
+          = player.name
