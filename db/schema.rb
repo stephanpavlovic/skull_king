@@ -32,15 +32,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_30_194644) do
   end
 
   create_table "rounds", force: :cascade do |t|
+    t.integer "bonus", default: 0
     t.datetime "created_at", null: false
-    t.integer "game_id", null: false
+    t.integer "guess"
     t.integer "number"
-    t.integer "player_id", null: false
+    t.integer "participation_id", null: false
+    t.integer "result"
     t.datetime "updated_at", null: false
-    t.index ["game_id"], name: "index_rounds_on_game_id"
-    t.index ["player_id"], name: "index_rounds_on_player_id"
+    t.index ["participation_id"], name: "index_rounds_on_participation_id"
   end
 
-  add_foreign_key "rounds", "games"
-  add_foreign_key "rounds", "players"
+  add_foreign_key "rounds", "participations"
 end

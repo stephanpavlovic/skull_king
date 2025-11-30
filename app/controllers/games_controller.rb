@@ -9,13 +9,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find_by!(code: params[:id])
-  end
-
-  def next
-    @game = Game.find_by!(code: params[:id])
-    raise params.inspect
-    @game.next_round(params)
-    redirect_to game_path(@game.code)
+    @round = Round.new(number: @game.round)
   end
 
   private

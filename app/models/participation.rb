@@ -4,6 +4,7 @@ class Participation < ApplicationRecord
 
   validates :game, presence: true
   validates :player, presence: true
+  has_many :rounds
 
   after_create_commit { update_waiting_list }
   after_destroy_commit { update_waiting_list }

@@ -1,14 +1,17 @@
 div
-  - if @game.started?
+  - if @game.finished?
+     div
+      h1.text-2xl.font-bold
+        = "Ergebnis"
+  - elsif @game.started?
     div
       h1.text-2xl.font-bold
         = "Runde #{@game.round}"
-    = form_with model: @game, url: game_player_rounds_path(@game.code, current_player) do |f|
-      .flex.flex-col.gap-1
-        - @game.players.each do |player|
-          .input
-            = f.label :name, "#{player.name}", class: "label"
-            = number_field_tag "guesses[][#{player.id}]", 0, min: 0, max: @game.round
+    = form_with model: @round, url: game_rounds_path(@game) do |f|
+      = f.hidden_field :number, value: @game.round
+      .input
+        = f.label :guess
+        = f.number_field :guess, min: 0, max: @game.round
       = f.submit "Next Round", class: "btn btn-primary"
   - else
-    = button_to "Start", next_game_path(@game.code), method: :post, class: "btn btn-primary"
+    = button_to "Start", game_player_rounds_path(@game, current_player), method: :post, class: "btn btn-primary"

@@ -5,9 +5,14 @@ div class="card w-96 bg-base-100 shadow-sm"
       = link_to @game.code, game_path(@game.code)
     #waiting_list
       = render "players/waiting_list", game: @game
-    = form_with model: Player.new, url: game_players_path(@game.id) do |f|
-      .flex.flex-col.gap-2
-        .input.w-full
-          = f.label :name, class: "label"
-          = f.text_field :name
-        = f.submit "Join Game", class: "btn btn-primary"
+    - if current_player.persisted?
+      div
+        h2= current_player.name
+      = button_to "Join Game", game_players_path(@game.id), class: "btn btn-primary"
+    - else
+      = form_with model: current_player, url: game_players_path(@game.id) do |f|
+        .flex.flex-col.gap-2
+          .input.w-full
+            = f.label :name, class: "label"
+            = f.text_field :name
+          = f.submit "Join Game", class: "btn btn-primary"

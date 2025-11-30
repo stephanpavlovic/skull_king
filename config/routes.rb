@@ -2,9 +2,8 @@ Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/jobs"
   get "player/create"
   resources :games do
-    resources :players, only: [:index, :create] do
-      resources :rounds
-    end
+    resources :players, only: [:index, :create]
+    resources :rounds, only: [:create, :show, :update]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

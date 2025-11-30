@@ -1,5 +1,5 @@
 class Game < ApplicationRecord
-  MAX_ROUNDS = 10
+  MAX_ROUNDS = 11
   scope :not_started, -> { where(round: 0) }
   scope :running, -> { where(round: ..MAX_ROUNDS) }
 
@@ -14,6 +14,18 @@ class Game < ApplicationRecord
 
   def started?
     round.positive?
+  end
+
+  def finished?
+    round >= MAX_ROUNDS
+  end
+
+  def next_round
+    update(round: round + 1)
+  end
+
+  def participation_for_player(player)
+    participations.find_by(player: player)
   end
 
   private

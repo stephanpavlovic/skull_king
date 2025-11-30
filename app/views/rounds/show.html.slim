@@ -1,0 +1,14 @@
+= form_with model: @round, url: game_round_path(@game, @round) do |f|
+  h2.text-2xl.font-bold
+    = "Runde #{@round.number}"
+  .flex.flex-col.gap-4
+    .input
+      = f.label :guess
+      = f.number_field :guess, disabled: true
+    .input
+      = f.label :result
+      = f.number_field :result
+    .input
+      = f.label :bonus
+      = f.number_field :bonus
+  = f.submit "Update", class: "btn btn-primary"
