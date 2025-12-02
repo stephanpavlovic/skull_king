@@ -1,14 +1,40 @@
 = form_with model: @round, url: game_round_path(@game, @round) do |f|
-  h2.text-2xl.font-bold
-    = "Runde #{@round.number}"
-  .flex.flex-col.gap-4
-    .input
-      = f.label :guess
-      = f.number_field :guess, disabled: true
-    .input
-      = f.label :result
-      = f.number_field :result
-    .input
-      = f.label :bonus
-      = f.number_field :bonus
-  = f.submit "Update", class: "btn btn-primary"
+  .max-w-xl.mx-auto.space-y-6
+    h2.text-2xl.font-bold.text-amber-300
+      = "Runde #{@round.number} abschließen"
+
+    / 1) Display of the original guess
+    .rounded-2xl.border.p-4.flex.items-center.justify-between.gap-4 class="border-emerald-500/60 bg-slate-900/70"
+      .flex.flex-col
+        span.text-xs.uppercase.text-slate-400.whitespace-nowrap class="tracking-[0.2em]"
+          | Dein Tipp
+        span.mt-1.text-3xl.font-black.text-emerald-300
+          = @round.guess
+      .text-right.text-xs.text-slate-400
+        span
+          | Du bekommst Bonus, wenn Tipp und Ergebnis übereinstimmen.
+
+    / 2) Select the actual result achieved
+    .rounded-2xl.border.border-slate-800.bg-slate-900/80.p-4.space-y-3
+      .flex.items-center.justify-between.gap-2
+        span.text-sm.font-semibold.text-slate-100
+          | Stiche
+        span.text-slate-400 class="text-[0.7rem]"
+          | Wähle das tatsächliche Ergebnis.
+
+      .grid.grid-cols-3.gap-2.md:grid-cols-6
+        - (@game.round + 1).times do |i|
+          label.block.cursor-pointer.select-none
+            = f.radio_button :result, i, class: "peer hidden"
+            .rounded-xl.border.border-slate-700.py-1.5.text-center.text-sm.font-mono.text-slate-200.transition class="bg-slate-900/70 hover:border-amber-400 hover:bg-slate-900 peer-checked:border-amber-400 peer-checked:bg-slate-900 peer-checked:text-amber-300"
+              = i
+
+    / 3) Bonus points input
+    .rounded-2xl.border.border-slate-800.bg-slate-900/80.p-4.space-y-2
+      .flex.items-center.justify-between
+        span.text-slate-400 class="text-[0.7rem]"
+          | Optional: Extra-Punkte für besondere Manöver.
+      = f.number_field :bonus, class: "input input-bordered w-full bg-slate-700", step: 10
+
+    .pt-2.flex.justify-end
+      = f.submit "Runde abschließen", class: "btn btn-primary"

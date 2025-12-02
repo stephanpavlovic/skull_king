@@ -1,14 +1,21 @@
-ul class="my-6 flex flex-col gap-2 text-xs"
+.space-y-2.text-xs
   - if game.players.none?
-    li
-      svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-        circle cx="12" cy="12" r="9"
-        path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v5l3 3"
-      span
-        = "Waiting for players"
+    .flex.items-center.gap-2.rounded-lg.border.border-dashed.px-3.py-2 class="border-amber-500/60 bg-slate-900/60"
+      .inline-flex.h-7.w-7.items-center.justify-center.rounded-full.bg-slate-950.border class="border-amber-500/70"
+        svg xmlns="http://www.w3.org/2000/svg" class="size-4 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          circle cx="12" cy="12" r="9"
+          path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v5l3 3"
+      .flex.flex-col
+        span.text-amber-200.font-medium
+          = "Waiting for players"
+        span.text-slate-400 class="text-[0.65rem]"
+          | Share the code above to invite your crew.
   - else
-    - game.players.each do |player|
-      li
-        svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"
-        span
-          = player.name
+    ul.flex.flex-col.gap-1
+      - game.players.each do |player|
+        li.flex.items-center.justify-between.gap-2.rounded-md.px-3.py-1.5 class="bg-slate-900/70"
+          .flex.items-center.gap-2
+            svg xmlns="http://www.w3.org/2000/svg" class="size-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"
+            span.text-slate-100
+              = player.name

@@ -16,4 +16,8 @@ class Participation < ApplicationRecord
   def blub
     broadcast_replace_to :players, target: "waiting_list", partial: "players/blub", locals: { game: game }
   end
+
+  def calculate_score
+    rounds.where.not(result: nil).sum(&:score)
+  end
 end

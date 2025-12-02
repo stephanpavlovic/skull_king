@@ -1,0 +1,32 @@
+.mb-4.flex.items-center.justify-between.gap-3
+  .flex.items-center.gap-2.text-xs.font-mono.uppercase.text-slate-500 class="tracking-[0.2em]"
+    span
+      | Captain's Table
+  .flex.items-center.gap-2
+    = link_to "Zurück zum Spiel",
+              game_path(@game.code, round_number: @last_unfinished_round),
+              class: "btn btn-xs btn-ghost text-slate-200 border border-slate-700/70 bg-slate-900/60 hover:bg-slate-800/80 text-[0.7rem]"
+
+.overflow-x-auto
+  table.table.w-full.text-sm.font-mono
+    thead
+      tr.bg-slate-900/80
+        th
+        - @participations.each do |p|
+          th.text-right.text-amber-300.font-semibold.font-mono
+            = p.player.name
+    tbody
+      tr
+        td.py-2.pr-4.text-amber-300.font-bold
+          | Gesamt
+        - @participations.each do |p|
+          td.py-2.text-right.font-mono.font-bold.text-amber-300
+            = p.calculate_score
+      - @game.round.times do |i|
+        - next if (i + 1) == Game::MAX_ROUNDS
+        tr
+          td.py-1.5.pr-4.text-slate-400
+            = link_to "Runde #{i+1}", game_path(@game.code, round_number: i+1)
+          - @participations.each do |p|
+            td.py-1.5.text-right.font-mono.text-slate-300
+              = p.rounds.find_by(number: i+1)&.score || "-"

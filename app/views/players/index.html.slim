@@ -1,18 +1,44 @@
 = turbo_stream_from :players
-div class="card w-96 bg-base-100 shadow-sm"
-  div class="card-body"
-    h2 class="text-3xl font-bold"
-      = link_to @game.code, game_path(@game.code)
-    #waiting_list
+
+.max-w-xl.mx-auto.space-y-4
+  .flex.items-center.justify-between.gap-3
+    .flex.items-center.gap-2.text-xs.font-mono.uppercase.text-slate-500
+      span class="tracking-[0.2em]"
+        | Crew Manifest
+    .inline-flex.items-center.gap-1.rounded-full.px-3.py-1.text-slate-300 class="bg-slate-800/80 text-[0.65rem]"
+      span.text-emerald-400
+        | ●
+      span
+        | Join the table before the tide turns.
+
+  .rounded-3xl.border.border-slate-800.shadow-xl class="bg-slate-900/80 shadow-black/50 p-5"
+    .flex.items-center.justify-between.gap-3.mb-4
+      h2.text-2xl.font-bold.text-amber-300.font-mono
+        = link_to @game.code, game_path(@game.code)
+      - if current_player&.persisted?
+        .text-right.text-xs.text-slate-400
+          div
+            | Angemeldet als
+          div.font-mono.text-slate-100
+            = current_player.name
+
+    #waiting_list.mb-4
       = render "players/waiting_list", game: @game
-    - if current_player.persisted?
-      div
-        h2= current_player.name
-      = button_to "Join Game", game_players_path(@game.id), class: "btn btn-primary"
+
+    - if current_player&.persisted?
+      - if @game.participations.exists?(player: current_player)
+        = button_to "Start", game_rounds_path(@game), method: :post, class: "btn btn-primary"
+      - else
+        .mt-2.flex.justify-end
+          = button_to "Mitspielen", game_players_path(@game.id), class: "btn btn-primary btn-sm"
     - else
-      = form_with model: current_player, url: game_players_path(@game.id) do |f|
-        .flex.flex-col.gap-2
-          .input.w-full
-            = f.label :name, class: "label"
-            = f.text_field :name
-          = f.submit "Join Game", class: "btn btn-primary"
+      .mt-2
+        = form_with model: Player.new, url: game_players_path(@game.id) do |f|
+          .flex.flex-col.gap-3
+            .input.w-full
+              .label
+                span.label-text.text-xs.uppercase class="tracking-[0.18em] text-slate-400"
+                  | Name
+              = f.text_field :name, class: "input input-bordered w-full bg-slate-900/80", required: true
+            .flex.justify-end
+              = f.submit "Mitspielen", class: "btn btn-primary btn-sm"

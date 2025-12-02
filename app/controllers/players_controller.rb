@@ -6,7 +6,8 @@ class PlayersController < ApplicationController
     @game = Game.find(params[:game_id])
     @player = current_player || Player.create(name: params.dig(:player, :name))
     session[:player_id] = @player.id
-    if @game.participations.create(player: @player)
+    @participation = @game.participations.find_or_initialize_by(player: @player)
+    if @participation.save
       redirect_to game_path(@game.code)
     else
       redirect_to game_players_path(@game.code)

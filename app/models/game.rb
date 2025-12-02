@@ -4,9 +4,8 @@ class Game < ApplicationRecord
   scope :running, -> { where(round: ..MAX_ROUNDS) }
 
   has_many :participations
+  has_many :rounds, through: :participations
   has_many :players, through: :participations
-
-  before_validation :set_code, only: :create
 
   def finish!
     update(round: MAX_ROUNDS)
@@ -20,6 +19,10 @@ class Game < ApplicationRecord
     round >= MAX_ROUNDS
   end
 
+  def start!
+    update(round: 1)
+  end
+
   def next_round
     update(round: round + 1)
   end
@@ -27,8 +30,6 @@ class Game < ApplicationRecord
   def participation_for_player(player)
     participations.find_by(player: player)
   end
-
-  private
 
   def set_code
     self.code = SecureRandom.hex(3).upcase

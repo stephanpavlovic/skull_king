@@ -1,0 +1,16 @@
+div
+  h1.text-2xl.font-bold
+    = "Runde #{number}"
+- url = @round.persisted? ? game_round_path(@game, @round) : game_rounds_path(@game)
+= form_with model: @round, url: url do |f|
+  = f.hidden_field :number, value: number
+  .mt-4.grid.grid-cols-3.gap-3.md:grid-cols-4.mb-4
+    - (number + 1).times do |i|
+      label.block.cursor-pointer.select-none
+        = f.radio_button :guess, i, class: "peer hidden"
+        .rounded-2xl.border.border-slate-700.text-center.shadow-sm.transition.py-2 class="bg-slate-900/70 hover:border-amber-400 hover:shadow-amber-500/20 peer-checked:border-amber-400 peer-checked:bg-slate-900 peer-checked:shadow-lg"
+          .text-xs.uppercase.text-slate-500 class="tracking-[0.24em]"
+            | Stiche
+          .mt-1.text-3xl.font-black.text-amber-300
+            = i
+  = f.submit "Schätzung abgeben", class: "btn btn-primary"
