@@ -6,7 +6,7 @@ class Round < ApplicationRecord
 
     if result == guess
       if guess.positive?
-        guess * 20
+        (guess * 20) + bonus
       else
         number * 10
       end

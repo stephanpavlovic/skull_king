@@ -31,6 +31,6 @@ class RoundsController < ApplicationController
   private
 
   def round_params
-    params.require(:round).permit(:guess, :result, :number)
+    params.require(:round).permit(:guess, :result, :number, :bonus)
   end
 end
