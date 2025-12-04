@@ -24,7 +24,11 @@ class Game < ApplicationRecord
   end
 
   def next_round
-    update(round: round + 1)
+    if participations.all? { |p|
+      p.rounds.find_by(number: round).completed?
+    }
+      update(round: round + 1)
+    end
   end
 
   def participation_for_player(player)

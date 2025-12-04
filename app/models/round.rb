@@ -1,8 +1,12 @@
 class Round < ApplicationRecord
   belongs_to :participation
 
+  def completed?
+    guess.present? && result.present?
+  end
+
   def score
-    return if result.blank?
+    return unless completed?
 
     if result == guess
       if guess.positive?
