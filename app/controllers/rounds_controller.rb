@@ -5,6 +5,8 @@ class RoundsController < ApplicationController
     if @game.round.zero?
       @game.start!
       redirect_to game_path(@game.code)
+    elsif @game.round == 1 && params[:round].blank?
+      redirect_to game_path(@game.code, round_number: 1)
     else
       @round = @participation.rounds.create(round_params)
       redirect_to game_round_path(@game, @round)

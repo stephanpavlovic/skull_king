@@ -1,3 +1,77 @@
-ul
-  - @games.each do |game|
-    li = link_to game.code, game_players_path(game.code)
+/ Root background
+div class="min-h-screen bg-slate-950 text-slate-100"
+  div class="max-w-4xl mx-auto px-4 py-10"
+    / Header
+    div class="flex items-center justify-between mb-8"
+      div class="flex items-center gap-3"
+        span class="text-3xl font-black text-amber-300"
+          | SK
+        h1 class="text-3xl font-black tracking-tight"
+          | Skull King Tavern
+      = button_to games_path, class: "btn btn-warning btn-sm shadow pirate-new-game" do
+        span class="mr-1 font-semibold"
+          | +
+        | Start a new voyage
+
+    / Main pirate panel
+    div class="bg-slate-900/70 border border-amber-700/50 rounded-2xl shadow-xl shadow-amber-900/40 overflow-hidden"
+      div class="border-b border-amber-800/60 bg-gradient-to-r from-amber-950/60 to-slate-950/40 px-6 py-4 flex items-center justify-between"
+        div class="flex items-center gap-3"
+          span class="text-2xl font-bold text-amber-300"
+            | SK
+          div
+            h2 class="text-xl font-semibold tracking-wide"
+              | Join a crew
+            p class="text-sm text-amber-100/70"
+              | Choose a table and claim your share of the treasure.
+        span class="text-xs uppercase tracking-[0.2em] text-amber-200/60"
+          | Games Ahoy
+
+      - if @games.any?
+        div class="p-6 bg-[radial-gradient(circle_at_top,#facc15_0,#0f172a_55%)]/10"
+          ul class="grid gap-4 md:grid-cols-2"
+            - @games.each do |game|
+              li
+                = link_to game_players_path(game.code), class: "block group rounded-xl border border-amber-800/60 bg-gradient-to-br from-slate-900/90 via-slate-950 to-slate-950/90 px-4 py-4 shadow-lg shadow-black/60 hover:border-amber-400 hover:shadow-amber-900/60 transition duration-200" do
+                  div class="flex items-start justify-between gap-3"
+                    div
+                      div class="text-xs uppercase tracking-[0.2em] text-amber-300/70 mb-1"
+                        | Voyage Code
+                      div class="flex items-center gap-2"
+                        span class="text-2xl font-black text-amber-300 group-hover:text-amber-200 transition"
+                          = game.code
+                        span class="text-xs bg-amber-900/70 text-amber-100 px-2 py-0.5 rounded-full border border-amber-600/80"
+                          | Open crew
+                      - if game.respond_to?(:created_at) && game.created_at.present?
+                        p class="text-[0.7rem] text-amber-100/60 mt-1"
+                          | Cast off
+                          = " "
+                          = time_ago_in_words(game.created_at)
+                          |  ago
+                    div class="flex flex-col items-end gap-1"
+                      span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-300"
+                        span
+                          | Join crew
+                        span class="text-[0.6rem]"
+                          | ->
+                      - if game.respond_to?(:players) && game.players.respond_to?(:count)
+                        span class="text-[0.65rem] text-amber-100/60"
+                          = pluralize(game.players.count, "sailor")
+                  div class="mt-3 border-t border-dashed border-amber-800/60 pt-2 flex items-center justify-between text-[0.7rem]"
+                    span class="text-amber-200/80"
+                      | Beware the Skull King.
+                    span class="text-amber-300/80 group-hover:text-amber-100 transition"
+                      | Enter the tavern ->
+
+      - else
+        div class="p-8 flex flex-col items-center justify-center text-center bg-[radial-gradient(circle_at_top,#facc15_0,#0f172a_60%)]/10"
+          span class="text-5xl mb-3 font-black text-amber-300"
+            | X
+          h2 class="text-2xl font-bold tracking-wide mb-2"
+            | No crews gathered... yet
+          p class="text-sm text-amber-100/80 max-w-md mb-6"
+            | The tavern is quiet and the sea is calm. Start a fresh voyage and let new legends be written upon the waves.
+          = button_to games_path, class: "btn btn-warning shadow-lg shadow-amber-900/60 pirate-empty-cta" do
+            span class="mr-1 font-semibold"
+              | +
+            | Raise a new flag
